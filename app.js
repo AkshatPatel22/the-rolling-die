@@ -58,11 +58,15 @@ function requireManager(req, res, next)
 
 // Navigation highlighting
 app.use("/home", function(req, res, next) { req.TPL.homenav = true; next(); });
+app.use("/games", function(req, res, next) { req.TPL.gamesnav = true; next(); });
+app.use("/inventory", function(req, res, next) { req.TPL.inventorynav = true; next(); });
 app.use("/login", function(req, res, next) { req.TPL.loginnav = true; next(); });
 app.use("/staff", function(req, res, next) { req.TPL.staffnav = true; next(); });
 
 // Controllers
 app.use("/home", require("./controllers/home"));
+app.use("/games", require("./controllers/games"));
+app.use("/inventory", requireLogin, require("./controllers/inventory"));
 app.use("/login", require("./controllers/login"));
 app.use("/staff", requireManager, require("./controllers/staff"));
 
@@ -74,6 +78,12 @@ app.get("/", function(req, res) {
 app.use(function(req, res) {
   req.TPL.pagetitle = "Page not found";
   res.status(404).render("notfound", req.TPL);
+});
+
+// Unexpected errors show a friendly page instead of a stack trace
+app.use(function(err, req, res, next) {
+  console.error(err);
+  res.status(500).render("error", req.TPL || {});
 });
 
 const PORT = process.env.PORT || 3000;

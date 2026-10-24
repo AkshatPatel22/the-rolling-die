@@ -3,7 +3,25 @@
 
 <div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
   <h1 class="display-5 fw-bold">Welcome to The Rolling Die</h1>
-  <p class="col-md-8 fs-5">Grab a table, order a coffee and pick from our library of board games.</p>
+  <p class="col-md-8 fs-5">Grab a table, order a coffee and pick from our library of board games. Check what's on the shelf before you arrive.</p>
+  <a class="btn btn-primary btn-lg" href="/games">Browse the games</a>
+</div>
+
+<div class="row g-3 mb-4 text-center">
+  <div class="col-6 col-md-3"><div class="card shadow-sm"><div class="card-body"><div class="fs-2 fw-bold">{{stats.titles}}</div><div class="text-muted">Titles</div></div></div></div>
+  <div class="col-6 col-md-3"><div class="card shadow-sm"><div class="card-body"><div class="fs-2 fw-bold">{{stats.copies}}</div><div class="text-muted">Copies</div></div></div></div>
+  <div class="col-6 col-md-3"><div class="card shadow-sm"><div class="card-body"><div class="fs-2 fw-bold text-success">{{stats.available}}</div><div class="text-muted">On the shelf</div></div></div></div>
+  <div class="col-6 col-md-3"><div class="card shadow-sm"><div class="card-body"><div class="fs-2 fw-bold text-danger">{{stats.soldout}}</div><div class="text-muted">Titles all in use</div></div></div></div>
+</div>
+
+<h2 class="h4 mb-3">Available right now</h2>
+<div class="list-group shadow-sm">
+  {{#available}}
+  <a href="/games/{{id}}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+    <span><strong>{{title}}</strong> <span class="text-muted small">{{category}} &middot; {{min_players}}-{{max_players}} players</span></span>
+    <span class="badge text-bg-success">{{available_copies}} available</span>
+  </a>
+  {{/available}}
 </div>
 
 {{>footer}}

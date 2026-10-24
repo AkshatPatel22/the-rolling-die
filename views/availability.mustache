@@ -1,0 +1,3 @@
+<span class="badge {{#isavailable}}{{#lowstock}}text-bg-warning{{/lowstock}}{{^lowstock}}text-bg-success{{/lowstock}}{{/isavailable}}{{^isavailable}}text-bg-danger{{/isavailable}}" data-availability="{{id}}">
+  {{#isavailable}}{{available_copies}} of {{total_copies}} available{{/isavailable}}{{^isavailable}}All {{total_copies}} in use{{/isavailable}}
+</span>

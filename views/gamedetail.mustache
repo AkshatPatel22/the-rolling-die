@@ -1,0 +1,26 @@
+{{>header}}
+{{>navigation}}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/games">Games</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{game.title}}</li>
+  </ol>
+</nav>
+
+{{#game}}
+<div class="card shadow-sm">
+  <div class="card-body p-4">
+    <h1 class="h2">{{title}}</h1>
+    <p class="fs-5">{{>availability}}</p>
+    <p>{{description}}</p>
+    <dl class="row mb-0">
+      <dt class="col-sm-3">Category</dt><dd class="col-sm-9">{{category}}</dd>
+      <dt class="col-sm-3">Players</dt><dd class="col-sm-9">{{min_players}} to {{max_players}}</dd>
+      <dt class="col-sm-3">Play time</dt><dd class="col-sm-9">About {{play_time}} minutes</dd>
+    </dl>
+  </div>
+</div>
+{{/game}}
+
+{{>footer}}

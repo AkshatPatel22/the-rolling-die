@@ -1,0 +1,68 @@
+{{>header}}
+{{>navigation}}
+
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <h1 class="h2 mb-3">{{pagetitle}}</h1>
+
+    {{#haserrors}}
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        {{#errors}}<li>{{.}}</li>{{/errors}}
+      </ul>
+    </div>
+    {{/haserrors}}
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+        {{#game}}
+        <form action="{{formaction}}" method="post">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" class="form-control" id="title" name="title" value="{{title}}" required maxlength="80">
+            </div>
+            <div class="col-md-4">
+              <label for="category_id" class="form-label">Category</label>
+              <select class="form-select" id="category_id" name="category_id" required>
+                <option value="">Choose...</option>
+                {{#categories}}<option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>{{/categories}}
+              </select>
+            </div>
+            <div class="col-6 col-md-4">
+              <label for="min_players" class="form-label">Min players</label>
+              <input type="number" class="form-control" id="min_players" name="min_players" value="{{min_players}}" min="1" required>
+            </div>
+            <div class="col-6 col-md-4">
+              <label for="max_players" class="form-label">Max players</label>
+              <input type="number" class="form-control" id="max_players" name="max_players" value="{{max_players}}" min="1" required>
+            </div>
+            <div class="col-md-4">
+              <label for="play_time" class="form-label">Play time (minutes)</label>
+              <input type="number" class="form-control" id="play_time" name="play_time" value="{{play_time}}" min="1" required>
+            </div>
+            <div class="col-6">
+              <label for="total_copies" class="form-label">Total copies</label>
+              <input type="number" class="form-control" id="total_copies" name="total_copies" value="{{total_copies}}" min="0" required>
+            </div>
+            <div class="col-6">
+              <label for="available_copies" class="form-label">Available copies</label>
+              <input type="number" class="form-control" id="available_copies" name="available_copies" value="{{available_copies}}" min="0" required>
+            </div>
+            <div class="col-12">
+              <label for="description" class="form-label">Description</label>
+              <textarea class="form-control" id="description" name="description" rows="3" maxlength="500">{{description}}</textarea>
+            </div>
+          </div>
+          <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-success">{{#editing}}Save changes{{/editing}}{{^editing}}Add game{{/editing}}</button>
+            <a href="/inventory" class="btn btn-outline-secondary">Cancel</a>
+          </div>
+        </form>
+        {{/game}}
+      </div>
+    </div>
+  </div>
+</div>
+
+{{>footer}}

@@ -5,7 +5,7 @@ const UsersModel = require('../models/users.js');
 // Display the login page (logged-in users are sent straight to the home page)
 router.get("/", function(req, res)
 {
-  if (req.session.username) return res.redirect("/home");
+  if (req.session.username) return res.redirect("/inventory");
 
   req.TPL.pagetitle = "Staff Login";
   res.render("login", req.TPL);
@@ -37,7 +37,7 @@ router.post("/attemptlogin", async function(req, res)
     req.session.username = user.username;
     req.session.role = user.role;
     req.session.flash_success = "Welcome back, " + user.username + "!";
-    res.redirect("/home");
+    res.redirect("/inventory");
   });
 });
 

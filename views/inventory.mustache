@@ -1,0 +1,49 @@
+{{>header}}
+{{>navigation}}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+  <h1 class="h2 mb-0">Inventory</h1>
+  <a class="btn btn-success" href="/inventory/add">+ Add game</a>
+</div>
+
+<p class="text-muted">{{stats.titles}} titles &middot; {{stats.available}} of {{stats.copies}} copies on the shelf</p>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-dark">
+        <tr>
+          <th>Title</th><th>Category</th><th>Players</th><th class="text-center">On shelf</th>
+          <th class="text-center">Table</th><th>Last update</th><th class="text-end">Manage</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#games}}
+        <tr {{#soldout}}class="table-danger"{{/soldout}}>
+          <td><a href="/games/{{id}}">{{title}}</a></td>
+          <td>{{category}}</td>
+          <td>{{min_players}}-{{max_players}}</td>
+          <td class="text-center fw-bold">{{available_copies}} / {{total_copies}}</td>
+          <td class="text-center text-nowrap">
+            <form action="/inventory/checkout/{{id}}" method="post" class="d-inline">
+              <button class="btn btn-sm btn-outline-secondary" title="Copy taken to a table" {{#soldout}}disabled{{/soldout}}>&minus; Out</button>
+            </form>
+            <form action="/inventory/return/{{id}}" method="post" class="d-inline">
+              <button class="btn btn-sm btn-outline-secondary" title="Copy returned to the shelf" {{#allin}}disabled{{/allin}}>+ In</button>
+            </form>
+          </td>
+          <td class="small text-muted">{{updated_at}}{{#updated_by}}<br>by {{updated_by}}{{/updated_by}}</td>
+          <td class="text-end text-nowrap">
+            <a class="btn btn-sm btn-primary" href="/inventory/edit/{{id}}">Edit</a>
+            <form action="/inventory/delete/{{id}}" method="post" class="d-inline" onsubmit="return confirm('Remove this game from the inventory?');">
+              <button class="btn btn-sm btn-outline-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {{/games}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{{>footer}}

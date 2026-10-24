@@ -1,0 +1,42 @@
+{{>header}}
+{{>navigation}}
+
+<h1 class="h2 mb-3">Our Games</h1>
+
+<form class="row g-2 mb-4" action="/games" method="get">
+  <div class="col-md-6">
+    <input type="search" class="form-control" name="search" placeholder="Search by title" value="{{search}}" aria-label="Search by title">
+  </div>
+  <div class="col-md-4">
+    <select class="form-select" name="category" aria-label="Category">
+      <option value="">All categories</option>
+      {{#categories}}
+      <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+      {{/categories}}
+    </select>
+  </div>
+  <div class="col-md-2 d-grid">
+    <button class="btn btn-primary" type="submit">Search</button>
+  </div>
+</form>
+
+{{#nogames}}
+<div class="alert alert-info">No games match your search.</div>
+{{/nogames}}
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+  {{#games}}
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 card-title"><a href="/games/{{id}}" class="text-decoration-none">{{title}}</a></h2>
+        <p class="text-muted small mb-2">{{category}} &middot; {{min_players}}-{{max_players}} players &middot; {{play_time}} min</p>
+        <p class="card-text">{{description}}</p>
+      </div>
+      <div class="card-footer bg-white">{{>availability}}</div>
+    </div>
+  </div>
+  {{/games}}
+</div>
+
+{{>footer}}

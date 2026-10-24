@@ -7,6 +7,10 @@
     <div class="collapse navbar-collapse" id="mainnav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item"><a class="nav-link {{#homenav}}active{{/homenav}}" href="/home">Home</a></li>
+        <li class="nav-item"><a class="nav-link {{#gamesnav}}active{{/gamesnav}}" href="/games">Games</a></li>
+        {{#loggedin}}
+        <li class="nav-item"><a class="nav-link {{#inventorynav}}active{{/inventorynav}}" href="/inventory">Inventory</a></li>
+        {{/loggedin}}
         {{#ismanager}}
         <li class="nav-item"><a class="nav-link {{#staffnav}}active{{/staffnav}}" href="/staff">Staff</a></li>
         {{/ismanager}}
