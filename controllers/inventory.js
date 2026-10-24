@@ -2,6 +2,15 @@ const express = require('express');
 const router = express.Router();
 const GamesModel = require('../models/games.js');
 const CategoriesModel = require('../models/categories.js');
+const socket = require('../socket.js');
+
+// Tell every open browser the new copy counts for a game
+async function broadcastGame(id)
+{
+  const game = await GamesModel.getGameById(id);
+  if (game) socket.inventoryChanged({ id: game.id, title: game.title,
+                                      available_copies: game.available_copies, total_copies: game.total_copies });
+}
 
 // Read and validate the add/edit game form. Returns { game, errors }.
 async function readGameForm(body)
@@ -74,7 +83,8 @@ router.post("/create", async function(req, res)
   {
     try
     {
-      await GamesModel.createGame(game, req.session.userid);
+      const id = await GamesModel.createGame(game, req.session.userid);
+      await broadcastGame(id);
       req.session.flash_success = game.title + " was added to the inventory.";
       return res.redirect("/inventory");
     }
@@ -114,6 +124,7 @@ router.post("/update/:id", async function(req, res, next)
     try
     {
       await GamesModel.updateGame(existing.id, game, req.session.userid);
+      await broadcastGame(existing.id);
       req.session.flash_success = game.title + " was updated.";
       return res.redirect("/inventory");
     }
@@ -134,14 +145,16 @@ router.post("/update/:id", async function(req, res, next)
 router.post("/checkout/:id", async function(req, res)
 {
   const ok = await GamesModel.changeAvailability(req.params.id, -1, req.session.userid);
-  if (!ok) req.session.flash_error = "No copies left to hand out.";
+  if (ok) await broadcastGame(req.params.id);
+  else req.session.flash_error = "No copies left to hand out.";
   res.redirect("/inventory");
 });
 
 router.post("/return/:id", async function(req, res)
 {
   const ok = await GamesModel.changeAvailability(req.params.id, 1, req.session.userid);
-  if (!ok) req.session.flash_error = "All copies are already on the shelf.";
+  if (ok) await broadcastGame(req.params.id);
+  else req.session.flash_error = "All copies are already on the shelf.";
   res.redirect("/inventory");
 });
 
@@ -151,6 +164,7 @@ router.post("/delete/:id", async function(req, res)
   if (game)
   {
     await GamesModel.deleteGame(game.id);
+    socket.inventoryChanged({ id: game.id, title: game.title, deleted: true });
     req.session.flash_success = game.title + " was removed from the inventory.";
   }
   res.redirect("/inventory");

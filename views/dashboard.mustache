@@ -1,0 +1,63 @@
+{{>header}}
+{{>navigation}}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+  <h1 class="h2 mb-0">Manager Dashboard</h1>
+  <div>
+    <span id="socket-status" class="badge text-bg-secondary">Connecting...</span>
+    <span id="bot-status" class="badge text-bg-secondary">Bot status unknown</span>
+  </div>
+</div>
+
+<div class="row g-3 mb-4 text-center">
+  <div class="col-6 col-lg-3"><div class="card shadow-sm"><div class="card-body"><div id="total-count" class="fs-2 fw-bold">{{total}}</div><div class="text-muted">Bot questions answered</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card shadow-sm"><div class="card-body"><div class="fs-2 fw-bold">{{stats.titles}}</div><div class="text-muted">Titles in inventory</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card shadow-sm"><div class="card-body"><div id="available-count" class="fs-2 fw-bold text-success">{{stats.available}}</div><div class="text-muted">Copies on the shelf</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card shadow-sm"><div class="card-body"><div class="fs-2 fw-bold">{{stats.copies}}</div><div class="text-muted">Total copies</div></div></div></div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white"><h2 class="h5 mb-0">Live bot activity</h2></div>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0">
+          <thead><tr><th>Time</th><th>Discord user</th><th>Command</th><th>Asked about</th><th>Bot reply</th></tr></thead>
+          <tbody id="activity-body">
+            {{#activity}}
+            <tr>
+              <td class="text-nowrap small">{{created_at}}</td>
+              <td>{{discord_user}}</td>
+              <td><code>/{{command}}</code></td>
+              <td>{{query}}</td>
+              <td class="small">{{response}}</td>
+            </tr>
+            {{/activity}}
+          </tbody>
+        </table>
+      </div>
+      {{#noactivity}}<div id="no-activity" class="card-body text-muted">No bot activity yet. Try a slash command in Discord.</div>{{/noactivity}}
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-white"><h2 class="h5 mb-0">Commands used</h2></div>
+      <ul id="command-counts" class="list-group list-group-flush">
+        {{#counts}}
+        <li class="list-group-item d-flex justify-content-between" data-command="{{command}}"><code>/{{command}}</code><span class="badge text-bg-primary rounded-pill">{{uses}}</span></li>
+        {{/counts}}
+      </ul>
+    </div>
+    <div class="card shadow-sm">
+      <div class="card-header bg-white"><h2 class="h5 mb-0">Live inventory changes</h2></div>
+      <ul id="inventory-feed" class="list-group list-group-flush">
+        <li class="list-group-item text-muted small">Changes made by staff will appear here.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/dashboard.js"></script>
+
+{{>footer}}

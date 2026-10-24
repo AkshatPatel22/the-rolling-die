@@ -4,6 +4,7 @@ const express = require('express');
 const http = require('http');
 const mustacheExpress = require('mustache-express');
 const session = require('express-session');
+const socket = require('./socket.js');
 
 const app = express();
 const server = http.createServer(app);
@@ -18,12 +19,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 
 // Sessions keep staff logged in between page loads
-app.use(session({
+const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET || 'dev-only-secret',
   resave: false,
   saveUninitialized: false,
   cookie: { httpOnly: true, sameSite: 'lax', maxAge: 1000 * 60 * 60 * 4 }
-}));
+});
+app.use(sessionMiddleware);
+
+// Socket.IO runs on the same server and can read the same sessions
+const io = socket.init(server, sessionMiddleware);
 
 // Start a fresh template object on every request, with login details for the navbar
 app.use(function(req, res, next) {
@@ -61,6 +66,7 @@ app.use("/home", function(req, res, next) { req.TPL.homenav = true; next(); });
 app.use("/games", function(req, res, next) { req.TPL.gamesnav = true; next(); });
 app.use("/inventory", function(req, res, next) { req.TPL.inventorynav = true; next(); });
 app.use("/login", function(req, res, next) { req.TPL.loginnav = true; next(); });
+app.use("/dashboard", function(req, res, next) { req.TPL.dashboardnav = true; next(); });
 app.use("/staff", function(req, res, next) { req.TPL.staffnav = true; next(); });
 
 // Controllers
@@ -68,6 +74,7 @@ app.use("/home", require("./controllers/home"));
 app.use("/games", require("./controllers/games"));
 app.use("/inventory", requireLogin, require("./controllers/inventory"));
 app.use("/login", require("./controllers/login"));
+app.use("/dashboard", requireManager, require("./controllers/dashboard"));
 app.use("/staff", requireManager, require("./controllers/staff"));
 
 app.get("/", function(req, res) {
@@ -94,4 +101,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, server };
+module.exports = { app, server, io };
