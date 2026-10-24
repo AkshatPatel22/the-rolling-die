@@ -99,6 +99,10 @@ if (require.main === module) {
   server.listen(PORT, function() {
     console.log("The Rolling Die is running at http://localhost:" + PORT);
   });
+
+  // Start the Discord bot too, if a token has been set in .env
+  if (process.env.DISCORD_TOKEN) require('./bot/bot.js').startBot(process.env.DISCORD_TOKEN);
+  else console.log("DISCORD_TOKEN not set, so the Discord bot is not running.");
 }
 
 module.exports = { app, server, io };
