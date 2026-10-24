@@ -46,6 +46,7 @@
         {{#counts}}
         <li class="list-group-item d-flex justify-content-between" data-command="{{command}}"><code>/{{command}}</code><span class="badge text-bg-primary rounded-pill">{{uses}}</span></li>
         {{/counts}}
+        {{^counts}}<li id="no-counts" class="list-group-item text-muted small">No commands used yet.</li>{{/counts}}
       </ul>
     </div>
     <div class="card shadow-sm">

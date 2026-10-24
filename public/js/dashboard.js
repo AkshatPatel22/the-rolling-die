@@ -58,6 +58,8 @@ socket.on("bot-activity", function(row) {
   let item = commandCounts.querySelector('[data-command="' + row.command + '"]');
   if (!item)
   {
+    const noCounts = document.getElementById("no-counts");
+    if (noCounts) noCounts.remove();
     item = document.createElement("li");
     item.className = "list-group-item d-flex justify-content-between";
     item.dataset.command = row.command;
