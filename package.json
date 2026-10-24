@@ -7,7 +7,7 @@
     "start": "node app.js",
     "initdb": "node initdb.js",
     "deploy-commands": "node bot/deploy-commands.js",
-    "test": "node --test --test-concurrency=1 tests/"
+    "test": "node --test --test-concurrency=1"
   },
   "author": "Akshat Patel",
   "license": "ISC",
