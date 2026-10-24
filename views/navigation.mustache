@@ -7,8 +7,21 @@
     <div class="collapse navbar-collapse" id="mainnav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item"><a class="nav-link {{#homenav}}active{{/homenav}}" href="/home">Home</a></li>
+        {{#ismanager}}
+        <li class="nav-item"><a class="nav-link {{#staffnav}}active{{/staffnav}}" href="/staff">Staff</a></li>
+        {{/ismanager}}
+      </ul>
+      <ul class="navbar-nav">
+        {{#loggedin}}
+        <li class="nav-item"><span class="navbar-text me-3">Signed in as <strong class="text-white">{{username}}</strong></span></li>
+        <li class="nav-item"><a class="btn btn-outline-light btn-sm mt-1" href="/login/logout">Logout</a></li>
+        {{/loggedin}}
+        {{^loggedin}}
+        <li class="nav-item"><a class="nav-link {{#loginnav}}active{{/loginnav}}" href="/login">Staff Login</a></li>
+        {{/loggedin}}
       </ul>
     </div>
   </div>
 </nav>
 <main class="container flex-grow-1">
+{{>flash}}

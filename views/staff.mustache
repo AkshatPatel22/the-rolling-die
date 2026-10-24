@@ -1,0 +1,60 @@
+{{>header}}
+{{>navigation}}
+
+<h1 class="h2 mb-4">Staff Accounts</h1>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <table class="table table-striped align-middle mb-0">
+          <thead><tr><th>Username</th><th>Role</th><th class="text-end">Action</th></tr></thead>
+          <tbody>
+            {{#users}}
+            <tr>
+              <td>{{username}}</td>
+              <td>{{#ismanagerrole}}<span class="badge text-bg-primary">manager</span>{{/ismanagerrole}}{{^ismanagerrole}}<span class="badge text-bg-secondary">staff</span>{{/ismanagerrole}}</td>
+              <td class="text-end">
+                {{^isself}}
+                <form action="/staff/delete/{{id}}" method="post" class="d-inline" onsubmit="return confirm('Delete {{username}}?');">
+                  <button class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+                {{/isself}}
+                {{#isself}}<span class="text-muted small">you</span>{{/isself}}
+              </td>
+            </tr>
+            {{/users}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5">Add an account</h2>
+        <form action="/staff/create" method="post">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" required pattern="[A-Za-z0-9_]{3,20}">
+            <div class="form-text">3-20 letters, numbers or underscores.</div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required minlength="6">
+          </div>
+          <div class="mb-3">
+            <label for="role" class="form-label">Role</label>
+            <select class="form-select" id="role" name="role">
+              <option value="staff">Staff</option>
+              <option value="manager">Manager</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success">Create account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{>footer}}
