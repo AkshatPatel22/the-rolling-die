@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Secrets and local configuration
+.env
+
+# SQLite database files (rebuilt with npm run initdb)
+*.db
+*.db-journal
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
