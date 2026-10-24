@@ -26,5 +26,8 @@
     "socket.io-client": "^4.8.4",
     "supertest": "^7.3.1"
   },
-  "private": true
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
 }
